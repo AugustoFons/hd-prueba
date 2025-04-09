@@ -9,39 +9,51 @@ export default function DentalMarketingSteps() {
   const [connectorHeights, setConnectorHeights] = useState([])
   const [connectorFillPercentages, setConnectorFillPercentages] = useState([])
 
+  const [imagesLoaded, setImagesLoaded] = useState(false)
+
   useEffect(() => {
+    const image = new Image()
+    image.src = logotest
+    image.onload = () => {
+      setImagesLoaded(true)
+    }
+  }, [])
+  
+
+  useEffect(() => {
+    if (!imagesLoaded) return
+  
     const calculateConnectorHeights = () => {
       const heights = []
-
+  
       for (let i = 0; i < stepsRefs.current.length - 1; i++) {
         const currentStep = stepsRefs.current[i]
         const nextStep = stepsRefs.current[i + 1]
-
+  
         if (currentStep && nextStep) {
-
           const currentStepNumberElement = currentStep.querySelector(".step-number")
           const nextStepNumberElement = nextStep.querySelector(".step-number")
-
+  
           if (currentStepNumberElement && nextStepNumberElement) {
             const currentNumberRect = currentStepNumberElement.getBoundingClientRect()
             const nextNumberRect = nextStepNumberElement.getBoundingClientRect()
-
             const distance = Math.max(0, nextNumberRect.top - currentNumberRect.bottom)
             heights.push(distance)
           }
         }
       }
-
+  
       setConnectorHeights(heights)
     }
-
+  
     calculateConnectorHeights()
     window.addEventListener("resize", calculateConnectorHeights)
-
+  
     return () => {
       window.removeEventListener("resize", calculateConnectorHeights)
     }
-  }, [])
+  }, [imagesLoaded])
+  
 
   useEffect(() => {
     let ticking = false
