@@ -26,7 +26,7 @@ export default function DentalMarketingSteps() {
             const currentNumberRect = currentStepNumberElement.getBoundingClientRect()
             const nextNumberRect = nextStepNumberElement.getBoundingClientRect()
 
-            const distance = nextNumberRect.top - currentNumberRect.bottom
+            const distance = Math.max(0, nextNumberRect.top - currentNumberRect.bottom)
             heights.push(distance)
           }
         }
